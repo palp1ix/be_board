@@ -1,0 +1,10 @@
+export 'package:flutter/material.dart';
+export 'package:get_it/get_it.dart';
+export 'navigation/app_navigator.dart';
+export 'navigation/app_routes.dart';
+export 'navigation/go_router_navigator.dart';
+export 'res/app_assets.dart';
+export 'res/app_colors.dart';
+export 'res/app_theme.dart';
+export 'res/app_text_styles.dart';
+export 'service_locator.dart';

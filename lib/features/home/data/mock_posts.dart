@@ -1,0 +1,53 @@
+import 'package:be_board/core/core.dart';
+import 'package:be_board/features/home/domain/entities/entities.dart';
+
+final List<PostItem> mockPosts = [
+  PostItem(
+    imageUrl: AppAssets.post1,
+    title: 'Vintage Leather Armchair',
+    description: 'A detailed paragraph outlining the product\'s condition, features, dimensions, and other relevant information. This classic armchair brings a touch of timeless style to any room. It has been well-cared for and comes from a smoke-free home. The leather shows a beautiful, natural patina.',
+    author: const Author(
+      name: 'Alex Thompson',
+      avatarUrl: 'https://img.freepik.com/free-photo/young-handsome-man-wearing-casual-tshirt-blue-background-happy-face-smiling-with-crossed-arms-looking-camera-positive-person_839833-12963.jpg?semt=ais_hybrid&w=740&q=80',
+    ),
+    price: 350,
+    location: 'New York',
+    timeAgo: '2 hours ago',
+  ),
+  PostItem(
+    imageUrl: AppAssets.post2,
+    title: 'Classic 10-Speed Road Bike',
+    description: 'This bike is in excellent condition and perfect for city commuting. It has a lightweight frame, responsive brakes, and a comfortable saddle. Recently tuned up and ready to ride!',
+    author: const Author(
+      name: 'Maria Garcia',
+      avatarUrl: 'https://t4.ftcdn.net/jpg/03/83/25/83/360_F_383258331_D8imaEMl8Q3lf7EKU2Pi78Cn0R7KkW9o.jpg',
+    ),
+    price: 200,
+    location: 'Brooklyn',
+    timeAgo: '5 hours ago',
+  ),
+  PostItem(
+    imageUrl: AppAssets.post3,
+    title: 'Handmade Ceramic Mug Set',
+    description: 'Set of four beautiful, handcrafted ceramic mugs. Each mug is unique, with a speckled glaze finish. Microwave and dishwasher safe. Perfect for your morning coffee or tea.',
+    author: const Author(
+      name: 'David Kim',
+      avatarUrl: 'https://cdn.create.vista.com/api/media/small/20030237/stock-photo-cheerful-young-man-over-white',
+    ),
+    price: 45,
+    location: 'San Francisco',
+    timeAgo: '1 day ago',
+  ),
+  PostItem(
+    imageUrl: AppAssets.post4,
+    title: 'Minimalist Oak Desk',
+    description: 'A sleek and modern oak desk, perfect for a home office or study space. The desk has a large surface area and a built-in drawer for storage. It is in great condition with minor wear.',
+    author: const Author(
+      name: 'Chris Johnson',
+      avatarUrl: 'https://www.shutterstock.com/image-photo/handsome-happy-african-american-bearded-600nw-2460702995.jpg',
+    ),
+    price: 180,
+    location: 'Los Angeles',
+    timeAgo: '2 days ago',
+  ),
+];

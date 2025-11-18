@@ -12,7 +12,7 @@ final List<PostItem> mockPosts = [
     ),
     price: 350,
     location: 'New York',
-    timeAgo: '2 hours ago',
+    createdAt: '2 hours ago',
   ),
   PostItem(
     imageUrl: AppAssets.post2,
@@ -24,7 +24,7 @@ final List<PostItem> mockPosts = [
     ),
     price: 200,
     location: 'Brooklyn',
-    timeAgo: '5 hours ago',
+    createdAt: '5 hours ago',
   ),
   PostItem(
     imageUrl: AppAssets.post3,
@@ -36,7 +36,7 @@ final List<PostItem> mockPosts = [
     ),
     price: 45,
     location: 'San Francisco',
-    timeAgo: '1 day ago',
+    createdAt: '1 day ago',
   ),
   PostItem(
     imageUrl: AppAssets.post4,
@@ -48,6 +48,6 @@ final List<PostItem> mockPosts = [
     ),
     price: 180,
     location: 'Los Angeles',
-    timeAgo: '2 days ago',
+    createdAt: '2 days ago',
   ),
 ];

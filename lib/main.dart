@@ -1,11 +1,13 @@
 import 'package:be_board/core/navigation/app_navigator.dart';
-import 'package:be_board/core/navigation/go_router_navigator.dart';
 import 'package:be_board/core/res/app_theme.dart';
-import 'package:be_board/core/service_locator.dart';
+import 'package:be_board/core/project_setup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  setupServiceLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupProjectDependencies();
   runApp(const MyApp());
 }
 
@@ -14,12 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = sl<AppNavigator>() as GoRouterNavigator;
     return MaterialApp.router(
       title: 'Be Board',
       theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      routerConfig: navigator.router,
+      routerConfig: (sl<AppNavigator>() as dynamic).router,
     );
   }
 }

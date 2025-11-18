@@ -7,4 +7,8 @@ export 'res/app_assets.dart';
 export 'res/app_colors.dart';
 export 'res/app_theme.dart';
 export 'res/app_text_styles.dart';
-export 'service_locator.dart';
+export 'project_setup.dart';
+export 'package:flutter_bloc/flutter_bloc.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:equatable/equatable.dart';
+

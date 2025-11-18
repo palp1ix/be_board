@@ -58,7 +58,7 @@ class PostListItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${item.location} • ${item.timeAgo}',
+                        '${item.location} • ${item.createdAt}',
                         style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.textGrey,

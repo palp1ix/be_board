@@ -39,7 +39,7 @@ class PostGridItem extends StatelessWidget {
                   Text('\$${item.price.toStringAsFixed(0)}'),
                   const SizedBox(height: 4),
                   Text(
-                    '${item.location} • ${item.timeAgo}',
+                    '${item.location} • ${item.createdAt}',
                     style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                 ],

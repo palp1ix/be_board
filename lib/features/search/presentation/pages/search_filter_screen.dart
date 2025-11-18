@@ -1,6 +1,6 @@
 import 'package:be_board/core/navigation/app_navigator.dart';
 import 'package:be_board/core/res/app_colors.dart';
-import 'package:be_board/core/service_locator.dart';
+import 'package:be_board/core/project_setup.dart';
 import 'package:flutter/material.dart';
 
 class SearchFilterScreen extends StatefulWidget {

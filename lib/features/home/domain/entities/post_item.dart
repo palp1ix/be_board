@@ -7,7 +7,7 @@ class PostItem {
   final Author author;
   final double price;
   final String location;
-  final String timeAgo;
+  final String createdAt;
 
   PostItem({
     required this.imageUrl,
@@ -16,6 +16,6 @@ class PostItem {
     required this.author,
     required this.price,
     required this.location,
-    required this.timeAgo,
+    required this.createdAt,
   });
 }

@@ -12,9 +12,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({
     required GetProfile getProfile,
     required SignOutUseCase signOutUseCase,
-  })  : _getProfile = getProfile,
-        _signOutUseCase = signOutUseCase,
-        super(ProfileInitial()) {
+  }) : _getProfile = getProfile,
+       _signOutUseCase = signOutUseCase,
+       super(ProfileInitial()) {
     on<ProfileDataLoaded>(_onProfileDataLoaded);
     on<ProfileSignOutButtonPressed>(_onProfileSignOutButtonPressed);
   }
@@ -26,11 +26,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoadInProgress());
     try {
       final profile = await _getProfile();
-      emit(ProfileLoadSuccess(
-        name: profile.name,
-        email: profile.email,
-        avatarUrl: profile.avatarUrl,
-      ));
+      emit(
+        ProfileLoadSuccess(
+          name: profile.name,
+          email: profile.email,
+          avatarUrl: profile.avatarUrl,
+        ),
+      );
     } catch (e) {
       emit(ProfileLoadFailure(e.toString()));
     }

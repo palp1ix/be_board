@@ -1,8 +1,8 @@
 import 'package:be_board/core/core.dart';
 import 'package:be_board/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:be_board/features/profile/presentation/widgets/profile_avatar.dart';
+import 'package:be_board/features/profile/presentation/widgets/profile_menu_tile.dart';
+import 'package:be_board/features/profile/presentation/widgets/profile_overview_card.dart';
 import 'package:be_board/features/profile/presentation/widgets/sign_out_button.dart';
-import 'package:be_board/features/profile/presentation/widgets/user_info_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,56 +23,73 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-          style: TextStyle(color: AppColors.textBlack),
-        ),
-        backgroundColor: AppColors.backgroundLight,
-        elevation: 0,
-      ),
-      body: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          if (state is ProfileLoadInProgress) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is ProfileLoadSuccess) {
-            return Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: SafeArea(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoadInProgress) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProfileLoadFailure) {
+              return Center(
+                child: Text('Failed to load profile: ${state.message}'),
+              );
+            } else if (state is ProfileLoadSuccess) {
+              return ListView(
+                padding: const EdgeInsets.all(20),
                 children: [
+                  Text(
+                    'Profile',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textBlack,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ProfileOverviewCard(
+                    name: state.name,
+                    email: state.email,
+                    avatarUrl: state.avatarUrl ?? AppAssets.placeholder,
+                  ),
                   const SizedBox(height: 24),
-                  ProfileAvatar(avatarUrl: state.avatarUrl),
-                  const SizedBox(height: 48),
-                  UserInfoTile(
-                    title: state.name,
-                    subtitle: 'Name',
-                    icon: Icons.person_outline,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    child: Column(
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.settings_outlined,
+                          title: 'Account settings',
+                          subtitle: 'Password, phone, notifications',
+                          onTap: () {},
+                        ),
+                        ProfileMenuTile(
+                          icon: Icons.location_on_outlined,
+                          title: 'Shipping address',
+                          subtitle: 'Manage delivery locations',
+                          onTap: () {},
+                        ),
+                        ProfileMenuTile(
+                          icon: Icons.credit_card,
+                          title: 'Payment methods',
+                          subtitle: 'Cards, payouts, invoices',
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
                   ),
-                  const Divider(),
-                  UserInfoTile(
-                    title: state.email,
-                    subtitle: 'Email',
-                    icon: Icons.email_outlined,
-                  ),
-                  const Spacer(),
+                  const SizedBox(height: 24),
                   SignOutButton(
-                    onPressed: () {
-                      context.read<ProfileBloc>().add(ProfileSignOutButtonPressed());
-                    },
+                    onPressed: () => context.read<ProfileBloc>().add(
+                      ProfileSignOutButtonPressed(),
+                    ),
                   ),
-                  const SizedBox(height: 24),
                 ],
-              ),
-            );
-          } else if (state is ProfileLoadFailure) {
-            return Center(
-              child: Text('Failed to load profile: ${state.message}'),
-            );
-          } else {
-            return const Center(child: Text('Something went wrong'));
-          }
-        },
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

@@ -11,11 +11,7 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle body = TextStyle(
-    fontSize: 14,
-  );
+  static const TextStyle body = TextStyle(fontSize: 14);
 
-  static const TextStyle caption = TextStyle(
-    fontSize: 12,
-  );
+  static const TextStyle caption = TextStyle(fontSize: 12);
 }

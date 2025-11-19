@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:be_board/features/auth/domain/usecases/usecases.dart';
 import 'package:be_board/core/core.dart';
-import 'package:equatable/equatable.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -29,7 +28,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final user = await _signUpUseCase(event.email, event.password, event.name, event.avatar);
+      final user = await _signUpUseCase(
+        event.email,
+        event.password,
+        event.name,
+        event.avatar,
+      );
       if (user != null) {
         emit(AuthSuccess());
       } else {
@@ -75,7 +79,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
       if (pickedFile != null) {
         emit(ImagePickedSuccess(File(pickedFile.path)));
       } else {

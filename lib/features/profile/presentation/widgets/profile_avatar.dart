@@ -4,11 +4,7 @@ class ProfileAvatar extends StatelessWidget {
   final String? avatarUrl;
   final double radius;
 
-  const ProfileAvatar({
-    super.key,
-    required this.avatarUrl,
-    this.radius = 60,
-  });
+  const ProfileAvatar({super.key, required this.avatarUrl, this.radius = 60});
 
   @override
   Widget build(BuildContext context) {
@@ -27,4 +23,4 @@ class ProfileAvatar extends StatelessWidget {
       ),
     );
   }
-  }
+}

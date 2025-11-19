@@ -1,16 +1,17 @@
-
 import 'dart:async';
 
 import 'package:be_board/core/core.dart';
 import 'package:be_board/features/auth/presentation/pages/login_screen.dart';
 import 'package:be_board/features/auth/presentation/pages/sign_up_screen.dart';
+import 'package:be_board/features/cart/presentation/pages/cart_screen.dart';
 import 'package:be_board/features/create_post/presentation/pages/create_post_screen.dart';
+import 'package:be_board/features/explore/presentation/pages/explore_screen.dart';
 import 'package:be_board/features/home/domain/entities/post_item.dart';
 import 'package:be_board/features/home/presentation/pages/home_screen.dart';
 import 'package:be_board/features/main/presentation/pages/main_screen.dart';
+import 'package:be_board/features/messenger/presentation/pages/messenger_screen.dart';
 import 'package:be_board/features/post_details/presentation/pages/post_details_screen.dart';
 import 'package:be_board/features/profile/presentation/pages/profile_screen.dart';
-import 'package:be_board/features/search/presentation/pages/search_filter_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -30,7 +31,9 @@ class GoRouterNavigator implements AppNavigator {
       refreshListenable: GoRouterRefreshStream(supabase.auth.onAuthStateChange),
       redirect: (BuildContext context, GoRouterState state) {
         final bool loggedIn = supabase.auth.currentUser != null;
-        final bool loggingIn = state.matchedLocation == AppRoutes.login || state.matchedLocation == AppRoutes.signUp;
+        final bool loggingIn =
+            state.matchedLocation == AppRoutes.login ||
+            state.matchedLocation == AppRoutes.signUp;
 
         if (!loggedIn) {
           return loggingIn ? null : AppRoutes.login;
@@ -50,15 +53,23 @@ class GoRouterNavigator implements AppNavigator {
           routes: [
             GoRoute(
               path: AppRoutes.home,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: HomeScreen(),
-              ),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: HomeScreen()),
+            ),
+            GoRoute(
+              path: AppRoutes.explore,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: ExploreScreen()),
+            ),
+            GoRoute(
+              path: AppRoutes.cart,
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: CartScreen()),
             ),
             GoRoute(
               path: AppRoutes.profile,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: ProfileScreen(),
-              ),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: ProfileScreen()),
             ),
           ],
         ),
@@ -76,9 +87,9 @@ class GoRouterNavigator implements AppNavigator {
           builder: (context, state) => const CreatePostScreen(),
         ),
         GoRoute(
-          path: AppRoutes.search,
+          path: AppRoutes.messenger,
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const SearchFilterScreen(),
+          builder: (context, state) => const MessengerScreen(),
         ),
         GoRoute(
           path: AppRoutes.login,

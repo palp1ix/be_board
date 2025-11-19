@@ -34,9 +34,7 @@ Future<void> setupProjectDependencies() async {
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(sl()),
   );
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(sl()),
-  );
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
@@ -50,10 +48,7 @@ Future<void> setupProjectDependencies() async {
     () => ProfileRepositoryImpl(sl()),
   );
   sl.registerLazySingleton(() => GetProfile(sl()));
-  sl.registerFactory(() => ProfileBloc(
-        getProfile: sl(),
-        signOutUseCase: sl(),
-      ));
+  sl.registerFactory(() => ProfileBloc(getProfile: sl(), signOutUseCase: sl()));
 
   // Image Picker
   sl.registerLazySingleton(() => ImagePicker());

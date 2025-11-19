@@ -14,11 +14,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       final name = user.userMetadata?['name'] as String? ?? 'No Name';
       final email = user.email ?? 'No Email';
       final avatarUrl = user.userMetadata?['avatar_url'] as String?;
-      return Profile(
-        name: name,
-        email: email,
-        avatarUrl: avatarUrl,
-      );
+      return Profile(name: name, email: email, avatarUrl: avatarUrl);
     } else {
       // This should ideally be a more specific exception
       throw Exception('User not authenticated');

@@ -1,7 +1,13 @@
 import 'package:be_board/core/core.dart';
 
 class AppBackButton extends StatelessWidget {
-  const AppBackButton({super.key, this.size = 40, this.backgroundColor = AppColors.backgroundLight, this.iconColor = AppColors.black, required this.onPressed});
+  const AppBackButton({
+    super.key,
+    this.size = 40,
+    this.backgroundColor = AppColors.backgroundLight,
+    this.iconColor = AppColors.black,
+    required this.onPressed,
+  });
 
   final double size;
   final Color backgroundColor;

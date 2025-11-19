@@ -16,10 +16,7 @@ class UserInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        icon,
-        color: AppColors.textGrey,
-      ),
+      leading: Icon(icon, color: AppColors.textGrey),
       title: Text(
         title,
         style: const TextStyle(
@@ -30,10 +27,7 @@ class UserInfoTile extends StatelessWidget {
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
-          color: AppColors.textGrey,
-          fontSize: 14,
-        ),
+        style: const TextStyle(color: AppColors.textGrey, fontSize: 14),
       ),
     );
   }

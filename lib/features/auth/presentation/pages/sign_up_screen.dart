@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:be_board/core/core.dart';
-import 'package:be_board/core_ui/core_ui.dart';
 import 'package:be_board/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:be_board/features/auth/presentation/widgets/auth_button.dart';
 import 'package:be_board/features/auth/presentation/widgets/auth_text_field.dart';
@@ -29,8 +28,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
             }
             if (state is ImagePickedSuccess) {
               setState(() {
@@ -46,12 +46,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () => context
-                          .read<AuthBloc>()
-                          .add(PickImageButtonPressed()),
+                      onTap: () => context.read<AuthBloc>().add(
+                        PickImageButtonPressed(),
+                      ),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: _avatar != null ? FileImage(_avatar!) : null,
+                        backgroundImage: _avatar != null
+                            ? FileImage(_avatar!)
+                            : null,
                         child: _avatar == null
                             ? const Icon(Icons.add_a_photo, size: 50)
                             : null,
@@ -59,10 +61,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 32),
                     AuthTextField(
-                        controller: _nameController, hintText: 'Name'),
+                      controller: _nameController,
+                      hintText: 'Name',
+                    ),
                     const SizedBox(height: 16),
                     AuthTextField(
-                        controller: _emailController, hintText: 'Email'),
+                      controller: _emailController,
+                      hintText: 'Email',
+                    ),
                     const SizedBox(height: 16),
                     AuthTextField(
                       controller: _passwordController,
@@ -76,13 +82,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 context.read<AuthBloc>().add(
-                                      SignUpButtonPressed(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                        name: _nameController.text,
-                                        avatar: _avatar,
-                                      ),
-                                    );
+                                  SignUpButtonPressed(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    name: _nameController.text,
+                                    avatar: _avatar,
+                                  ),
+                                );
                               }
                             },
                             text: 'Sign Up',

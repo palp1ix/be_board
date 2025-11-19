@@ -1,5 +1,4 @@
 import 'package:be_board/core/core.dart';
-import 'package:be_board/core_ui/core_ui.dart';
 import 'package:be_board/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:be_board/features/auth/presentation/widgets/auth_button.dart';
 import 'package:be_board/features/auth/presentation/widgets/auth_text_field.dart';
@@ -25,8 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           builder: (context, state) {
@@ -38,7 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AuthTextField(
-                        controller: _emailController, hintText: 'Email'),
+                      controller: _emailController,
+                      hintText: 'Email',
+                    ),
                     const SizedBox(height: 16),
                     AuthTextField(
                       controller: _passwordController,
@@ -52,18 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 context.read<AuthBloc>().add(
-                                      LoginButtonPressed(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      ),
-                                    );
+                                  LoginButtonPressed(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  ),
+                                );
                               }
                             },
                             text: 'Login',
                           ),
                     TextButton(
-                      onPressed: () =>
-                          sl<AppNavigator>().go(AppRoutes.signUp),
+                      onPressed: () => sl<AppNavigator>().go(AppRoutes.signUp),
                       child: const Text('Don\'t have an account? Sign up'),
                     ),
                   ],

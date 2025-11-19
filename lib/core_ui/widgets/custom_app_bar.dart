@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:be_board/core/res/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -26,11 +24,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final textTitle = title != null
-        ? Text(title!,
+        ? Text(
+            title!,
             style: const TextStyle(
-                color: AppColors.textBlack,
-                fontWeight: FontWeight.bold,
-                fontSize: 18))
+              color: AppColors.textBlack,
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+            ),
+          )
         : null;
 
     if (isSliver) {

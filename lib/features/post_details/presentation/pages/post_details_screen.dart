@@ -1,152 +1,294 @@
-import 'package:be_board/features/home/domain/entities/post_item.dart';
 import 'package:be_board/core/core.dart';
-import 'package:be_board/core_ui/core_ui.dart';
+import 'package:be_board/features/home/domain/entities/post_item.dart';
 
-class PostDetailsScreen extends StatelessWidget {
+class PostDetailsScreen extends StatefulWidget {
+  const PostDetailsScreen({super.key, required this.item});
+
   final PostItem item;
 
-  const PostDetailsScreen({super.key, required this.item});
+  @override
+  State<PostDetailsScreen> createState() => _PostDetailsScreenState();
+}
+
+class _PostDetailsScreenState extends State<PostDetailsScreen> {
+  int _selectedImageIndex = 0;
+
+  PostItem get item => widget.item;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      body: CustomScrollView(
-        slivers: [
-          CustomAppBar(
-            isSliver: true,
-            leading: AppBackButton(
-              size: 45,
-              onPressed: () => sl<AppNavigator>().pop(),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.more_horiz, color: AppColors.textBlack),
-                onPressed: () {},
-              ),
-            ],
-            expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    item.imageUrl, // Using the item's image
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.transparent, Colors.black45],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.5, 1.0],
-                      ),
+      backgroundColor: AppColors.backgroundLight,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+                child: Row(
+                  children: [
+                    AppIconButton(
+                      icon: Icon(Icons.arrow_back_ios_new_rounded),
+                      backgroundColor: AppColors.white,
+                      onPressed: () => sl<AppNavigator>().pop(),
                     ),
-                  ),
-                  // Image dots indicator
-                  Positioned(
-                    bottom: 10,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(4, (index) {
-                        return Container(
-                          width: 8.0,
-                          height: 8.0,
-                          margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: index == 0
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                          ),
-                        );
-                      }),
+                    const Spacer(),
+                    AppIconButton(
+                      icon: Icon(Icons.file_upload_outlined),
+                      backgroundColor: AppColors.white,
+                      onPressed: () {},
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    AppIconButton(
+                      icon: Icon(Icons.favorite_border_rounded),
+                      backgroundColor: AppColors.white,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '\$${item.price.toStringAsFixed(0)}',
-                    style: const TextStyle(
-                      fontSize: 30,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    item.description,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.textBody,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Stack(
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(item.author.avatarUrl),
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(36),
+                          child: Image.asset(
+                            item.gallery[_selectedImageIndex],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: 12),
-                      Text(
-                        item.author.name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textBlack,
+                      Positioned(
+                        left: 16,
+                        top: 16,
+                        child: AppBadge(
+                          label: item.category,
+                          backgroundColor: AppColors.white.withValues(
+                            alpha: 0.9,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 16,
+                        bottom: 16,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.white.withValues(alpha: 0.9),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.star_rounded,
+                                color: Color(0xFFFFB44C),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                item.rating.toStringAsFixed(1),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.w700),
+                              ),
+                              const SizedBox(width: 4),
+                              const Text('•'),
+                              const SizedBox(width: 4),
+                              Text(
+                                '24 reviews',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textGrey),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 100), // Space for bottom bar
-                ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFE5E7EB), width: 1)),
-        ),
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(double.infinity, 56),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 90,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  itemBuilder: (context, index) {
+                    final image = item.gallery[index];
+                    final isSelected = _selectedImageIndex == index;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedImageIndex = index;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primary
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(6),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(image, fit: BoxFit.cover),
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (_, __) => const SizedBox(width: 14),
+                  itemCount: item.gallery.length,
+                ),
+              ),
             ),
-            elevation: 4, // Corresponds to shadow-lg
-          ),
-          child: const Text(
-            'Send Message',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.title,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textBlack,
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Text(
+                          '\$${item.price.toStringAsFixed(0)}',
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                        if (item.oldPrice != null) ...[
+                          const SizedBox(width: 10),
+                          Text(
+                            '\$${item.oldPrice!.toStringAsFixed(0)}',
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: AppColors.textGrey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                          ),
+                        ],
+                        const Spacer(),
+                        AppBadge(
+                          label: item.isBestDeal ? 'Best price' : 'Limited',
+                          backgroundColor: AppColors.textBlack,
+                          textColor: AppColors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        AppBadge(
+                          label: 'Free shipping',
+                          icon: Icons.local_shipping_outlined,
+                          backgroundColor: AppColors.white,
+                        ),
+                        const SizedBox(width: 12),
+                        AppBadge(
+                          label: 'Easy returns',
+                          icon: Icons.loop_rounded,
+                          backgroundColor: AppColors.white,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      item.description,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textBody,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        radius: 26,
+                        backgroundImage: NetworkImage(item.author.avatarUrl),
+                      ),
+                      title: Text(
+                        item.author.name,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      subtitle: Text(
+                        '${item.location} • ${item.createdAt}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textGrey,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.chat_bubble_outline_rounded),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                        color: AppColors.backgroundLight,
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Total',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textGrey),
+                              ),
+                              Text(
+                                '\$${item.price.toStringAsFixed(0)}',
+                                style: Theme.of(context).textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 24),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 18,
+                                ),
+                              ),
+                              child: const Text('Send message'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

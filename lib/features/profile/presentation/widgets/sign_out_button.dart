@@ -11,15 +11,9 @@ class SignOutButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: const Icon(Icons.logout, color: AppColors.white),
-      label: const Text(
-        'Sign Out',
-        style: TextStyle(color: AppColors.white),
-      ),
+      label: const Text('Sign Out', style: TextStyle(color: AppColors.white)),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
       ),
     );
   }

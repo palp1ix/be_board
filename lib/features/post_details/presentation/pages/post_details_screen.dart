@@ -284,7 +284,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                   ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              '${item.location} • ${item.createdAt}',
+                              '${item.location} • ${DateFormatter.formatPostDate(item.createdAt)}',
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(color: AppColors.textGrey),
                             ),

@@ -43,6 +43,9 @@ Future<void> setupProjectDependencies() async {
   // Navigation
   sl.registerLazySingleton<AppNavigator>(() => GoRouterNavigator());
 
+  // Image Picker for Auth
+  sl.registerLazySingleton(() => ImagePicker());
+
   // Auth
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(sl()),

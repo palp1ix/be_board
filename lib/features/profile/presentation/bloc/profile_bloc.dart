@@ -44,11 +44,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     try {
       await _signOutUseCase();
-      // After signing out, we might want to emit an initial state or a specific
-      // signed-out state, but for now, we do nothing to allow the navigator's
-      // redirect logic to handle the screen transition.
+      // Don't emit any state here - the GoRouter redirect will handle navigation
+      // when auth state changes. Emitting state while navigating causes provider errors.
     } catch (e) {
-      emit(ProfileLoadFailure(e.toString()));
+      // Only emit failure if sign out actually failed
+      if (!emit.isDone) {
+        emit(ProfileLoadFailure(e.toString()));
+      }
     }
   }
 }

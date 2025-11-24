@@ -12,3 +12,4 @@ export 'project_setup.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:equatable/equatable.dart';
+export 'utils/date_formatter.dart';

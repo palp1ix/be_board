@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundLight,
       appBar: CustomAppBar(title: 'Login'),
       body: BlocProvider(
         create: (context) => sl<AuthBloc>(),
@@ -65,7 +66,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                     TextButton(
                       onPressed: () => sl<AppNavigator>().go(AppRoutes.signUp),
-                      child: const Text('Don\'t have an account? Sign up'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                      ),
+                      child: const Text(
+                        'Don\'t have an account? Sign up',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),

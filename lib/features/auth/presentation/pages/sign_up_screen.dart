@@ -22,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundLight,
       appBar: CustomAppBar(title: 'Sign Up'),
       body: BlocProvider(
         create: (context) => sl<AuthBloc>(),
@@ -49,14 +50,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onTap: () => context.read<AuthBloc>().add(
                         PickImageButtonPressed(),
                       ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: _avatar != null
-                            ? FileImage(_avatar!)
-                            : null,
-                        child: _avatar == null
-                            ? const Icon(Icons.add_a_photo, size: 50)
-                            : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.white,
+                          border: Border.all(
+                            color: AppColors.textGreyLight,
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.white,
+                          backgroundImage: _avatar != null
+                              ? FileImage(_avatar!)
+                              : null,
+                          child: _avatar == null
+                              ? const Icon(
+                                  Icons.add_a_photo,
+                                  size: 50,
+                                  color: AppColors.textGrey,
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -95,7 +111,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                     TextButton(
                       onPressed: () => sl<AppNavigator>().go(AppRoutes.login),
-                      child: const Text('Already have an account? Login'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                      ),
+                      child: const Text(
+                        'Already have an account? Login',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),

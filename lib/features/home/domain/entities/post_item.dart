@@ -1,10 +1,11 @@
 import 'entities.dart';
 
 class PostItem {
+  final String id;
   final String title;
   final String description;
   final String imageUrl;
-  final Author author;
+  final Author? author;
   final double price;
   final double? oldPrice;
   final String category;
@@ -17,10 +18,11 @@ class PostItem {
   final List<String> gallery;
 
   PostItem({
+    required this.id,
     required this.imageUrl,
     required this.title,
     required this.description,
-    required this.author,
+    this.author,
     required this.price,
     required this.location,
     required this.createdAt,

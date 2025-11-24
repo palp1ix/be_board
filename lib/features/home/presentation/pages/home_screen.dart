@@ -1,5 +1,4 @@
 import 'package:be_board/core/core.dart';
-import 'package:be_board/features/home/data/mock_posts.dart';
 import 'package:be_board/features/home/presentation/cubit/home_cubit.dart';
 import 'package:be_board/features/home/presentation/widgets/home_category_carousel.dart';
 import 'package:be_board/features/home/presentation/widgets/home_category_pill.dart';
@@ -16,7 +15,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeCubit(posts: mockPosts),
+      create: (_) =>
+          HomeCubit(postsRepository: sl(), categoriesRepository: sl()),
       child: const _HomeView(),
     );
   }
@@ -60,82 +60,93 @@ class _HomeView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: HomeHeader(
-                    onFilterTap: () =>
-                        sl<AppNavigator>().push(AppRoutes.explore),
-                    onMessengerTap: () =>
-                        sl<AppNavigator>().push(AppRoutes.messenger),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: HomeCategoryCarousel(
-                    categories: _categoryData,
-                    selectedTag: state.selectedCategory,
-                    onCategoryChanged: context.read<HomeCubit>().selectCategory,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: HomeFilterChips(
-                      categories: state.categories,
-                      selectedCategory: state.selectedCategory,
-                      onCategorySelected: context
-                          .read<HomeCubit>()
-                          .selectCategory,
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        const HomePromoCard(),
-                        const SizedBox(height: 24),
-                        HomeSectionHeader(
-                          title: 'Popular products',
-                          onActionTap: () {},
+            return state.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: HomeHeader(
+                          onFilterTap: () =>
+                              sl<AppNavigator>().push(AppRoutes.explore),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                HomePopularGrid(
-                  posts: state.filteredPosts,
-                  onItemTap: (item) => sl<AppNavigator>().push(
-                    AppRoutes.postDetails,
-                    extra: item,
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(24),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HomeSectionHeader(
-                          title: 'For your calm space',
-                          onActionTap: () {},
+                      ),
+                      SliverToBoxAdapter(
+                        child: HomeCategoryCarousel(
+                          categories: _categoryData,
+                          selectedTag: state.selectedCategory,
+                          onCategoryChanged: context
+                              .read<HomeCubit>()
+                              .selectCategory,
                         ),
-                        const SizedBox(height: 12),
-                        HomeCuratedTiles(items: state.posts),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: HomeFilterChips(
+                            categories: state.categories,
+                            selectedCategory: state.selectedCategory,
+                            onCategorySelected: context
+                                .read<HomeCubit>()
+                                .selectCategory,
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 12),
+                              const HomePromoCard(),
+                              const SizedBox(height: 24),
+                              HomeSectionHeader(
+                                title: 'Popular products',
+                                onActionTap: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      HomePopularGrid(
+                        posts: state.filteredPosts,
+                        onItemTap: (item) {
+                          sl<AppNavigator>().push(
+                            AppRoutes.postDetails,
+                            extra: item,
+                          );
+                        },
+                        onFavoriteTap: (item) {
+                          context.read<HomeCubit>().toggleFavorite(item);
+                        },
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(24),
+                        sliver: SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              HomeSectionHeader(
+                                title: 'For your calm space',
+                                onActionTap: () {},
+                              ),
+                              const SizedBox(height: 12),
+                              HomeCuratedTiles(items: state.posts),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(child: SizedBox(height: 80)),
+                    ],
+                  );
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => sl<AppNavigator>().push(AppRoutes.createPost),
-        child: const Icon(Icons.add, size: 30),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: FloatingActionButton(
+          onPressed: () => sl<AppNavigator>().push(AppRoutes.createPost),
+          child: const Icon(Icons.add, size: 30),
+        ),
       ),
     );
   }

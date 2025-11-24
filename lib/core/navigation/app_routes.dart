@@ -1,7 +1,7 @@
 class AppRoutes {
   static const String home = '/';
   static const String explore = '/explore';
-  static const String cart = '/cart';
+  static const String favorites = '/favorites';
   static const String profile = '/profile';
   static const String messenger = '/messenger';
   static const String postDetails = '/post-details';

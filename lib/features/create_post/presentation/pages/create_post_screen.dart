@@ -10,7 +10,12 @@ class CreatePostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CreatePostCubit(),
+      create: (_) => CreatePostCubit(
+        categoriesRepository: sl(),
+        postsRepository: sl(),
+        imagePickerService: sl(),
+        uploadPostImagesUseCase: sl(),
+      ),
       child: const _CreatePostView(),
     );
   }
@@ -39,9 +44,24 @@ class _CreatePostView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-        child: ElevatedButton(onPressed: () {}, child: const Text('Post item')),
+      bottomNavigationBar: BlocBuilder<CreatePostCubit, CreatePostState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+            child: ElevatedButton(
+              onPressed: state.isLoading
+                  ? null
+                  : () => context.read<CreatePostCubit>().createPost(),
+              child: state.isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Text('Post item'),
+            ),
+          );
+        },
       ),
     );
   }

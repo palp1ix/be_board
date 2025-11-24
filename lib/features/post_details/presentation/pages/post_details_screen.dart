@@ -1,5 +1,7 @@
 import 'package:be_board/core/core.dart';
+import 'package:be_board/core/domain/repositories/posts_repository.dart';
 import 'package:be_board/features/home/domain/entities/post_item.dart';
+import 'package:be_board/features/home/presentation/cubit/home_cubit.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   const PostDetailsScreen({super.key, required this.item});
@@ -12,8 +14,15 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   int _selectedImageIndex = 0;
+  late bool _isFavorite;
 
   PostItem get item => widget.item;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = item.isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +49,34 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     ),
                     const SizedBox(width: 12),
                     AppIconButton(
-                      icon: Icon(Icons.favorite_border_rounded),
+                      icon: Icon(
+                        _isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border_rounded,
+                      ),
                       backgroundColor: AppColors.white,
-                      onPressed: () {},
+                      iconColor: _isFavorite ? AppColors.primary : null,
+                      onPressed: () async {
+                        setState(() {
+                          _isFavorite = !_isFavorite;
+                        });
+                        try {
+                          await sl<PostsRepository>().toggleFavorite(item.id);
+                          // Update HomeCubit if available
+                          if (mounted) {
+                            try {
+                              context.read<HomeCubit>().toggleFavorite(item);
+                            } catch (_) {
+                              // HomeCubit not available in this context
+                            }
+                          }
+                        } catch (e) {
+                          // Revert on error
+                          setState(() {
+                            _isFavorite = !_isFavorite;
+                          });
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -58,7 +92,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       Positioned.fill(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(36),
-                          child: Image.asset(
+                          child: Image.network(
                             item.gallery[_selectedImageIndex],
                             fit: BoxFit.cover,
                           ),
@@ -145,7 +179,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         padding: const EdgeInsets.all(6),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(image, fit: BoxFit.cover),
+                          child: Image.network(image, fit: BoxFit.cover),
                         ),
                       ),
                     );
@@ -225,28 +259,42 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        radius: 26,
-                        backgroundImage: NetworkImage(item.author.avatarUrl),
-                      ),
-                      title: Text(
-                        item.author.name,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      subtitle: Text(
-                        '${item.location} • ${item.createdAt}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textGrey,
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 18,
+                          backgroundImage:
+                              item.author?.avatarUrl != null &&
+                                  item.author!.avatarUrl.isNotEmpty
+                              ? NetworkImage(item.author!.avatarUrl)
+                              : null,
+                          child:
+                              item.author?.avatarUrl == null ||
+                                  item.author!.avatarUrl.isEmpty
+                              ? const Icon(Icons.person, size: 20)
+                              : null,
                         ),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.chat_bubble_outline_rounded),
-                      ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.author?.name ?? 'Unknown',
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              '${item.location} • ${item.createdAt}',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textGrey),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                    const SizedBox(
+                      height: 24,
+                    ), // Added spacing after the author info row
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: const BoxDecoration(

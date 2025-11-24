@@ -3,6 +3,7 @@ import 'package:be_board/features/home/domain/entities/entities.dart';
 
 final List<PostItem> mockPosts = [
   PostItem(
+    id: 'mock-1',
     imageUrl: AppAssets.post1,
     title: 'Vintage Leather Armchair',
     description:
@@ -23,6 +24,7 @@ final List<PostItem> mockPosts = [
     gallery: [AppAssets.post1, AppAssets.post3, AppAssets.post4],
   ),
   PostItem(
+    id: 'mock-2',
     imageUrl: AppAssets.post2,
     title: 'Classic 10-Speed Road Bike',
     description:
@@ -43,6 +45,7 @@ final List<PostItem> mockPosts = [
     gallery: [AppAssets.post2, AppAssets.post1, AppAssets.post3],
   ),
   PostItem(
+    id: 'mock-3',
     imageUrl: AppAssets.post3,
     title: 'Handmade Ceramic Mug Set',
     description:
@@ -60,6 +63,7 @@ final List<PostItem> mockPosts = [
     gallery: [AppAssets.post3, AppAssets.post4],
   ),
   PostItem(
+    id: 'mock-4',
     imageUrl: AppAssets.post4,
     title: 'Minimalist Oak Desk',
     description:

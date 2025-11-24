@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:be_board/core/core.dart';
 import 'package:be_board/features/auth/presentation/pages/login_screen.dart';
 import 'package:be_board/features/auth/presentation/pages/sign_up_screen.dart';
-import 'package:be_board/features/cart/presentation/pages/cart_screen.dart';
+import 'package:be_board/features/favorites/presentation/pages/favorites_screen.dart';
 import 'package:be_board/features/create_post/presentation/pages/create_post_screen.dart';
 import 'package:be_board/features/explore/presentation/pages/explore_screen.dart';
 import 'package:be_board/features/home/domain/entities/post_item.dart';
@@ -62,9 +62,9 @@ class GoRouterNavigator implements AppNavigator {
                   const NoTransitionPage(child: ExploreScreen()),
             ),
             GoRoute(
-              path: AppRoutes.cart,
+              path: AppRoutes.favorites,
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: CartScreen()),
+                  const NoTransitionPage(child: FavoritesScreen()),
             ),
             GoRoute(
               path: AppRoutes.profile,

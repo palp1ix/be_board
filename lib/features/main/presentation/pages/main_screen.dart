@@ -20,10 +20,10 @@ class MainScreen extends StatefulWidget {
       selectedIcon: Icons.search,
     ),
     _MainDestination(
-      route: AppRoutes.cart,
-      label: 'Cart',
-      icon: Icons.shopping_bag_outlined,
-      selectedIcon: Icons.shopping_bag,
+      route: AppRoutes.favorites,
+      label: 'Favorites',
+      icon: Icons.favorite_border,
+      selectedIcon: Icons.favorite,
     ),
     _MainDestination(
       route: AppRoutes.profile,
@@ -43,19 +43,28 @@ class _MainScreenState extends State<MainScreen> {
     final currentIndex = _calculateSelectedIndex(context);
 
     return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: AppBottomNavBar(
-        items: List.generate(MainScreen._destinations.length, (index) {
-          final destination = MainScreen._destinations[index];
-          return AppBottomNavItem(
-            icon: index == currentIndex
-                ? destination.selectedIcon
-                : destination.icon,
-            label: destination.label,
-          );
-        }),
-        currentIndex: currentIndex,
-        onItemTap: (index) => _onItemTapped(index, context),
+      body: Stack(
+        children: [
+          Positioned.fill(child: widget.child),
+          Positioned(
+            bottom: 15,
+            left: 5,
+            right: 5,
+            child: AppBottomNavBar(
+              items: List.generate(MainScreen._destinations.length, (index) {
+                final destination = MainScreen._destinations[index];
+                return AppBottomNavItem(
+                  icon: index == currentIndex
+                      ? destination.selectedIcon
+                      : destination.icon,
+                  label: destination.label,
+                );
+              }),
+              currentIndex: currentIndex,
+              onItemTap: (index) => _onItemTapped(index, context),
+            ),
+          ),
+        ],
       ),
     );
   }

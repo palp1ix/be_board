@@ -1,6 +1,5 @@
 import 'package:be_board/core/core.dart';
 import 'package:be_board/features/explore/presentation/cubit/explore_cubit.dart';
-import 'package:be_board/features/home/presentation/widgets/home_product_card.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -158,62 +157,6 @@ class _ExploreView extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                // Search Results Section
-                                if (state.searchQuery.isNotEmpty) ...[
-                                  const SizedBox(height: 24),
-                                  _SectionTitle(
-                                    'Search Results (${state.searchResults.length})',
-                                  ),
-                                  const SizedBox(height: 12),
-                                  if (state.isSearching)
-                                    const Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(32),
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    )
-                                  else if (state.searchResults.isEmpty)
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(32),
-                                        child: Text(
-                                          'No items found',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.copyWith(
-                                                color: AppColors.textGrey,
-                                              ),
-                                        ),
-                                      ),
-                                    )
-                                  else
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            childAspectRatio: 0.75,
-                                            crossAxisSpacing: 12,
-                                            mainAxisSpacing: 12,
-                                          ),
-                                      itemCount: state.searchResults.length,
-                                      itemBuilder: (context, index) {
-                                        final post = state.searchResults[index];
-                                        return HomeProductCard(
-                                          item: post,
-                                          onTap: () {
-                                            sl<AppNavigator>().push(
-                                              AppRoutes.postDetails,
-                                              extra: post,
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                ],
                               ],
                             ),
                     ),
@@ -224,12 +167,24 @@ class _ExploreView extends StatelessWidget {
                   left: 20,
                   right: 20,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (state.searchQuery.isNotEmpty) {
+                        sl<AppNavigator>().push(
+                          AppRoutes.searchResults,
+                          extra: {
+                            'query': state.searchQuery,
+                            'results': state.searchResults,
+                          },
+                        );
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Text(
                         state.searchQuery.isNotEmpty
-                            ? 'Show ${state.searchResults.length} items'
+                            ? state.isSearching
+                                  ? 'Searching...'
+                                  : 'Show ${state.searchResults.length} items'
                             : 'Apply Filters',
                       ),
                     ),

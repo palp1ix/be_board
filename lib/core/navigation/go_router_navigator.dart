@@ -6,6 +6,7 @@ import 'package:be_board/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:be_board/features/favorites/presentation/pages/favorites_screen.dart';
 import 'package:be_board/features/create_post/presentation/pages/create_post_screen.dart';
 import 'package:be_board/features/explore/presentation/pages/explore_screen.dart';
+import 'package:be_board/features/explore/presentation/pages/search_results_page.dart';
 import 'package:be_board/features/home/domain/entities/post_item.dart';
 import 'package:be_board/features/home/presentation/pages/home_screen.dart';
 import 'package:be_board/features/main/presentation/pages/main_screen.dart';
@@ -100,6 +101,17 @@ class GoRouterNavigator implements AppNavigator {
           path: AppRoutes.signUp,
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) => const SignUpScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.searchResults,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            return SearchResultsPage(
+              query: extra['query'] as String,
+              results: extra['results'] as List<PostItem>,
+            );
+          },
         ),
       ],
       errorBuilder: (context, state) =>
